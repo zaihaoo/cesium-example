@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" type="text/css" href="./Lib/Cesium/Widgets/widgets.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Example>行政区域展示A</title>
+	</head>
+	<body>
+		<script type="module">
+			window.CESIUM_BASE_URL = './Lib/Cesium/';
+			import {
+				CameraEventType,
+				Ion,
+				PostProcessStageLibrary,
+				Viewer,
+				Color,
+				ScreenSpaceEventType,
+			} from './Lib/Cesium/index.js';
+
+			Ion.defaultAccessToken =
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlN2MzMWE5ZC0wYzkyLTQ3ODMtYmJlYy1iN2QxMWI4NjU3ODUiLCJpZCI6OTMzMjYsImlhdCI6MTY1MjI1MzYyN30.irrMfifWXXSjF_wHoeyjgkmjDHZ4LBnFL4hIZf-HSGg';
+
+			const viewer = new Viewer('canvas', {
+				animation: false, //是否显示动画控件
+				baseLayerPicker: false, //是否显示图层选择控件
+				geocoder: false, //是否显示地名查找控件
+				timeline: false, //是否显示时间线控件
+				sceneModePicker: false, //是否显示投影方式控件
+				navigationHelpButton: false, //是否显示帮助信息控件
+				infoBox: false, //是否显示点击要素之后显示的信息
+				homeButton: false,
+				shouldAnimate: true,
+				scene3DOnly: true,
+				selectionIndicator: false,
+			});
+
+			viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+			viewer.scene.globe.depthTestAgainstTerrain = true;
+			viewer.scene.debugShowFramesPerSecond = true;
+			viewer.cesiumWidget.creditContainer.style.display = 'none';
+
+			if (!PostProcessStageLibrary.isSilhouetteSupported(viewer.scene)) {
+				window.alert('This browser does not support the silhouette post process.');
+			}
+
+			// onload
+			viewer.scene.screenSpaceCameraController.rotateEventTypes = [CameraEventType.LEFT_DRAG];
+			viewer.scene.screenSpaceCameraController.tiltEventTypes = [CameraEventType.RIGHT_DRAG];
+			viewer.scene.screenSpaceCameraController.zoomEventTypes = [CameraEventType.WHEEL];
+
+			//关闭地图元素
+			viewer.scene.globe.show = false;
+			viewer.scene.skyBox.show = true; //隐藏天空盒子
+			viewer.scene.backgroundColor = new Color(0.0, 0.0, 0.0, 0.0); //隐藏黑色背景
+			viewer.scene.globe.baseColor = new Color(0, 0, 0, 0); //替换球体默认蓝色
+			viewer.scene.globe.enableLighting = false; //隐藏太阳
+			viewer.shadows = false;
+			viewer.scene.sun.show = false;
+			viewer.scene.moon.show = false; //隐藏月亮
+			viewer.scene.skyAtmosphere.show = false; //大气圈
+			viewer.scene.fog.enabled = false; //雾
+
+			viewer.imageryLayers.remove(viewer.imageryLayers.get(0), false);
+
+			import { example } from './Dist/region-display-A.js';
+			example(viewer);
+		</script>
+		<div id="canvas"></div>
+	</body>
+</html>

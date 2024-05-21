@@ -1,0 +1,79 @@
+{
+    "asset": {
+        "version": "0.0"
+    },
+    "geometricError": 16.0,
+    "root": {
+        "boundingVolume": {
+            "sphere": [
+                -755.885391304,
+                387.177782609,
+                19.0696913403,
+                46.57045185554566
+            ]
+        },
+        "refine": "replace",
+        "geometricError": 8.0,
+        "content": {
+            "url": "tile_2_24_8_tex.b3dm"
+        },
+        "children": [
+            {
+                "boundingVolume": {
+                    "sphere": [
+                        -771.510391304,
+                        371.552782609,
+                        26.33456228985,
+                        23.31946940408409
+                    ]
+                },
+                "geometricError": 4.0,
+                "content": {
+                    "url": "tile_3_24_8_tex.json"
+                }
+            },
+            {
+                "boundingVolume": {
+                    "sphere": [
+                        -771.510391304,
+                        402.802782609,
+                        22.1398935127,
+                        22.333339022485196
+                    ]
+                },
+                "geometricError": 4.0,
+                "content": {
+                    "url": "tile_3_24_12_tex.json"
+                }
+            },
+            {
+                "boundingVolume": {
+                    "sphere": [
+                        -740.260391304,
+                        371.552782609,
+                        19.07781041215,
+                        26.578066434580437
+                    ]
+                },
+                "geometricError": 4.0,
+                "content": {
+                    "url": "tile_3_28_8_tex.json"
+                }
+            },
+            {
+                "boundingVolume": {
+                    "sphere": [
+                        -740.260391304,
+                        402.802782609,
+                        14.675106285050001,
+                        24.37676595869576
+                    ]
+                },
+                "geometricError": 4.0,
+                "content": {
+                    "url": "tile_3_28_12_tex.json"
+                }
+            }
+        ]
+    }
+}

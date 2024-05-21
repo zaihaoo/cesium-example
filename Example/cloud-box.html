@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" type="text/css" href="./Lib/Cesium/Widgets/widgets.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Example>云盒效果</title>
+	</head>
+	<body>
+		<script type="module">
+			window.CESIUM_BASE_URL = './Lib/Cesium/';
+			import { CameraEventType, Ion, PostProcessStageLibrary, Viewer } from './Lib/Cesium/index.js';
+
+			Ion.defaultAccessToken =
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlN2MzMWE5ZC0wYzkyLTQ3ODMtYmJlYy1iN2QxMWI4NjU3ODUiLCJpZCI6OTMzMjYsImlhdCI6MTY1MjI1MzYyN30.irrMfifWXXSjF_wHoeyjgkmjDHZ4LBnFL4hIZf-HSGg';
+
+			const viewer = new Viewer('canvas', {
+				animation: false, //是否显示动画控件
+				baseLayerPicker: false, //是否显示图层选择控件
+				geocoder: false, //是否显示地名查找控件
+				timeline: false, //是否显示时间线控件
+				sceneModePicker: false, //是否显示投影方式控件
+				navigationHelpButton: false, //是否显示帮助信息控件
+				infoBox: false, //是否显示点击要素之后显示的信息
+				homeButton: false,
+				shouldAnimate: true,
+				scene3DOnly: true,
+			});
+
+			viewer.scene.globe.show = false;
+			viewer.scene.globe.depthTestAgainstTerrain = true;
+			viewer.scene.debugShowFramesPerSecond = true;
+			viewer.cesiumWidget.creditContainer.style.display = 'none';
+
+			if (!PostProcessStageLibrary.isSilhouetteSupported(viewer.scene)) {
+				window.alert('This browser does not support the silhouette post process.');
+			}
+
+			viewer.scene.screenSpaceCameraController.rotateEventTypes = [CameraEventType.LEFT_DRAG];
+			viewer.scene.screenSpaceCameraController.tiltEventTypes = [CameraEventType.RIGHT_DRAG];
+			viewer.scene.screenSpaceCameraController.zoomEventTypes = [CameraEventType.WHEEL];
+
+			import { GUI } from './Lib/DAT.GUI/dat.gui.module.js';
+			const gui = new GUI();
+			gui.width = 400;
+
+			import { example } from './Dist/cloud-box.js';
+			example(viewer, gui);
+		</script>
+		<div id="canvas"></div>
+	</body>
+</html>

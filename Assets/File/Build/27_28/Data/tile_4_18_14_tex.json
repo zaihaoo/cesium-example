@@ -1,0 +1,79 @@
+{
+    "asset": {
+        "version": "0.0"
+    },
+    "geometricError": 4.0,
+    "root": {
+        "boundingVolume": {
+            "sphere": [
+                -826.1978913042,
+                660.6152826087,
+                4.7041575480999999,
+                13.289797350707412
+            ]
+        },
+        "refine": "replace",
+        "geometricError": 2.0,
+        "content": {
+            "url": "tile_4_18_14_tex.b3dm"
+        },
+        "children": [
+            {
+                "boundingVolume": {
+                    "sphere": [
+                        -830.1041413042,
+                        656.7090326087,
+                        1.83949228905,
+                        7.145484333761158
+                    ]
+                },
+                "geometricError": 1.0,
+                "content": {
+                    "url": "tile_5_18_14_tex.b3dm"
+                }
+            },
+            {
+                "boundingVolume": {
+                    "sphere": [
+                        -830.1041413042,
+                        664.5215326087,
+                        3.94925803795,
+                        6.32194978722774
+                    ]
+                },
+                "geometricError": 1.0,
+                "content": {
+                    "url": "tile_5_18_15_tex.b3dm"
+                }
+            },
+            {
+                "boundingVolume": {
+                    "sphere": [
+                        -822.2916413042,
+                        656.7090326087,
+                        6.02936881295,
+                        6.626616361748636
+                    ]
+                },
+                "geometricError": 1.0,
+                "content": {
+                    "url": "tile_5_19_14_tex.b3dm"
+                }
+            },
+            {
+                "boundingVolume": {
+                    "sphere": [
+                        -822.2916413042,
+                        664.5215326087,
+                        7.5771308874,
+                        7.130685450900483
+                    ]
+                },
+                "geometricError": 1.0,
+                "content": {
+                    "url": "tile_5_19_15_tex.b3dm"
+                }
+            }
+        ]
+    }
+}

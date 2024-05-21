@@ -1,0 +1,32 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+		"module": "ESNext",
+		"lib": ["ESNext", "DOM"],
+		"moduleResolution": "Node",
+		//所有严格检查的总开关
+		"strict": true,
+		"sourceMap": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"noEmit": false,
+		//当有错误时不生成js文件
+		"noEmitOnError": true,
+		//用来设置编译后的文件是否使用严格模式 默认为false
+		"alwaysStrict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"skipLibCheck": true,
+		"allowJs": true,
+		"outDir": "./Dist/"
+	},
+	"include": [
+		// "*"
+	],
+	"exclude": ["./Lib/**/*"],
+	"files": ["city-demo.ts"],
+	"types": ["vite/client"]
+}

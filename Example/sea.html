@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" type="text/css" href="./Lib/Cesium/Widgets/widgets.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Example>海面演示</title>
+	</head>
+	<body>
+		<script type="module">
+			window.CESIUM_BASE_URL = './Lib/Cesium/';
+			import {
+				CameraEventType,
+				Cartesian3,
+				Ellipsoid,
+				Ion,
+				Math,
+				Matrix3,
+				Matrix4,
+				PostProcessStageLibrary,
+				Transforms,
+				UrlTemplateImageryProvider,
+				Viewer,
+				createWorldTerrainAsync,
+				EventHelper,
+				GlobeTheme,
+				Color,
+				ImageryLayer,
+				ArcGisMapServerImageryProvider,
+			} from './Lib/Cesium/index.js';
+
+			Ion.defaultAccessToken =
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlN2MzMWE5ZC0wYzkyLTQ3ODMtYmJlYy1iN2QxMWI4NjU3ODUiLCJpZCI6OTMzMjYsImlhdCI6MTY1MjI1MzYyN30.irrMfifWXXSjF_wHoeyjgkmjDHZ4LBnFL4hIZf-HSGg';
+
+			const layer = new ImageryLayer(
+				await ArcGisMapServerImageryProvider.fromUrl(
+					'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+				)
+			);
+			const viewer = new Viewer('canvas', {
+				globeTheme: new GlobeTheme({
+					bgColor: Color.BLACK,
+					alpha: 0.5,
+					invert: false,
+				}),
+				animation: false, //是否显示动画控件
+				baseLayerPicker: false, //是否显示图层选择控件
+				geocoder: false, //是否显示地名查找控件
+				timeline: false, //是否显示时间线控件
+				sceneModePicker: false, //是否显示投影方式控件
+				navigationHelpButton: false, //是否显示帮助信息控件
+				infoBox: false, //是否显示点击要素之后显示的信息
+				homeButton: false,
+				shouldAnimate: true,
+				scene3DOnly: true,
+				// baseLayer: new ImageryLayer(
+				// 	new UrlTemplateImageryProvider({
+				// 		url: 'https://gac-geo.googlecnapps.cn/maps/vt?lyrs=m&gl=cn&x={x}&y={y}&z={z}',
+				// 	})
+				// ),
+				baseLayer: layer,
+			});
+
+			viewer.scene.globe.depthTestAgainstTerrain = true;
+			viewer.scene.debugShowFramesPerSecond = true;
+			viewer.cesiumWidget.creditContainer.style.display = 'none';
+
+			if (!PostProcessStageLibrary.isSilhouetteSupported(viewer.scene)) {
+				window.alert('This browser does not support the silhouette post process.');
+			}
+
+			viewer.scene.screenSpaceCameraController.rotateEventTypes = [CameraEventType.LEFT_DRAG];
+			viewer.scene.screenSpaceCameraController.tiltEventTypes = [CameraEventType.RIGHT_DRAG];
+			viewer.scene.screenSpaceCameraController.zoomEventTypes = [CameraEventType.WHEEL];
+
+			import { GUI } from './Lib/DAT.GUI/dat.gui.module.js';
+			const gui = new GUI();
+			gui.width = 400;
+
+			const helper = new EventHelper();
+			helper.add(viewer.scene.globe.tileLoadProgressEvent, e => {
+				if (e == 0) {
+					// 相机视角(平滑)移动到指定经纬度位置
+					viewer.camera.flyTo({
+						destination: Cartesian3.fromDegrees(121.58, 38.91, 20000), //经度、纬度、高度
+						orientation: {
+							heading: 0,
+							pitch: Math.toRadians(-90 || -Math.PI_OVER_FOUR),
+							roll: Math.toRadians(360 || 0),
+						},
+						duration: 3,
+					});
+					helper.removeAll();
+				}
+			});
+
+			import { example } from './Dist/sea.js';
+			example(viewer, gui);
+		</script>
+		<div id="canvas"></div>
+	</body>
+</html>

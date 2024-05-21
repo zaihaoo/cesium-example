@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" type="text/css" href="./Lib/Cesium/Widgets/widgets.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Example>日照分析</title>
+	</head>
+	<body>
+		<script type="module">
+			window.CESIUM_BASE_URL = './Lib/Cesium/';
+			import {
+				CameraEventType,
+				Cartesian3,
+				Ellipsoid,
+				Ion,
+				Math,
+				Matrix3,
+				Matrix4,
+				PostProcessStageLibrary,
+				Transforms,
+				UrlTemplateImageryProvider,
+				Viewer,
+				createWorldTerrainAsync,
+				EventHelper,
+				GlobeTheme,
+				Color,
+				SkyBoxControl,
+				ImageryLayer,
+				ArcGisMapServerImageryProvider,
+			} from './Lib/Cesium/index.js';
+
+			Ion.defaultAccessToken =
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlN2MzMWE5ZC0wYzkyLTQ3ODMtYmJlYy1iN2QxMWI4NjU3ODUiLCJpZCI6OTMzMjYsImlhdCI6MTY1MjI1MzYyN30.irrMfifWXXSjF_wHoeyjgkmjDHZ4LBnFL4hIZf-HSGg';
+
+			const layer = new ImageryLayer(
+				await ArcGisMapServerImageryProvider.fromUrl(
+					'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+				)
+			);
+			const viewer = new Viewer('canvas', {
+				globeTheme: new GlobeTheme({
+					bgColor: Color.BLACK,
+					alpha: 0.5,
+					invert: false,
+					fogging: true,
+					scanningLine: true,
+				}),
+				animation: true, //是否显示动画控件
+				baseLayerPicker: false, //是否显示图层选择控件
+				geocoder: false, //是否显示地名查找控件
+				timeline: true, //是否显示时间线控件
+				sceneModePicker: false, //是否显示投影方式控件
+				navigationHelpButton: false, //是否显示帮助信息控件
+				infoBox: false, //是否显示点击要素之后显示的信息
+				homeButton: false,
+				shouldAnimate: true,
+				scene3DOnly: true,
+				shadows: true,
+				// baseLayer: new ImageryLayer(
+				// 	new UrlTemplateImageryProvider({
+				// 		// url: "http://localhost:9001/bigemap.arcgis-satellite/tiles/{z}/{x}/{y}.jpg?access_token=pk.eyJ1IjoiY3VzXzI5NW1kMnA5IiwiYSI6Ijlsa3h2NGJ1aHAxOG5ieHlqemw5ZnM0MXciLCJ0IjoxfQ.qwuFOEMOF5pJaDeSifOVJcMdq5iQI3mZVn4INsJZBD8",
+				// 		url: 'https://gac-geo.googlecnapps.cn/maps/vt?lyrs=m&gl=cn&x={x}&y={y}&z={z}',
+				// 	})
+				// ),
+				baseLayer: layer,
+			});
+
+			viewer.scene.globe.depthTestAgainstTerrain = true;
+			viewer.scene.debugShowFramesPerSecond = true;
+			viewer.cesiumWidget.creditContainer.style.display = 'none';
+			viewer.scene.moon.show = false;
+			const skybox = new SkyBoxControl(viewer, {
+				negative_x: 'Assets/File/SkyBox/Night/nx.png',
+				positive_x: 'Assets/File/SkyBox/Night/px.png',
+				negative_y: 'Assets/File/SkyBox/Night/ny.png',
+				positive_y: 'Assets/File/SkyBox/Night/py.png',
+				negative_z: 'Assets/File/SkyBox/Night/nz.png',
+				positive_z: 'Assets/File/SkyBox/Night/pz.png',
+			});
+			skybox.enable();
+
+			viewer.scene.globe.enableLighting = true;
+
+			if (!PostProcessStageLibrary.isSilhouetteSupported(viewer.scene)) {
+				window.alert('This browser does not support the silhouette post process.');
+			}
+
+			viewer.scene.screenSpaceCameraController.rotateEventTypes = [CameraEventType.LEFT_DRAG];
+			viewer.scene.screenSpaceCameraController.tiltEventTypes = [CameraEventType.RIGHT_DRAG];
+			viewer.scene.screenSpaceCameraController.zoomEventTypes = [CameraEventType.WHEEL];
+
+			import { GUI } from './Lib/DAT.GUI/dat.gui.module.js';
+			const gui = new GUI();
+			gui.width = 400;
+
+			import { example } from './Dist/sunlight-analysis.js';
+			example(viewer, gui);
+		</script>
+		<div id="canvas"></div>
+	</body>
+</html>
